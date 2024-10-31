@@ -3,3 +3,11 @@ server:
 spring:
   application:
     name: BiliAF
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bibliaf
+    username: postgres
+    password: postdba
+    jpa:
+      hibernate:
+        ddl-auto: none
+        show-sql: true
