@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GenreService {
     
@@ -40,13 +42,18 @@ public class GenreService {
         repository.delete(found);
     }
 
+    public List<GenreDto> findAll() {
+        var genres = repository.findAllByOrderByNameAsc();
+        return CustomModelMapper.parseObjectList(genres, GenreDto.class);
+    }
+
     public Page<GenreDto> findAll(Pageable pageable) {
         var genres = repository.findAll(pageable);
         return genres.map(genre -> CustomModelMapper.parseObject(genre, GenreDto.class));
     }
 
-    public Page<GenreDto> findByName(String name, Pageable pageable) {
-        var genres = repository.findByNameStartingWithIgnoreCaseOrderByName(name, pageable);
-        return genres.map(genre -> CustomModelMapper.parseObject(genre, GenreDto.class));
+    public List<GenreDto> findByName(String name) {
+        var genres = repository.findByNameStartingWithIgnoreCaseOrderByName(name);
+        return CustomModelMapper.parseObjectList(genres, GenreDto.class);
     }
 }

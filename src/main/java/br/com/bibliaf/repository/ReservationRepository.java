@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservationRepository extends JpaRepository<ReservationModel, Long> {
 
-    Page<ReservationModel> findByUserId(Long userId, Pageable pageable);
+    Page<ReservationModel> findByUserIdAndStatus(Long userId, ReservationModel.ReservationStatus status, Pageable pageable);
 
-    Page<ReservationModel> findByBookId(Long bookId, Pageable pageable);
+    Page<ReservationModel> findByBookIdAndStatus(Long bookId, ReservationModel.ReservationStatus status, Pageable pageable);
+
+    ReservationModel findByBookIdAndUserId(Long bookId, Long userId);
 }

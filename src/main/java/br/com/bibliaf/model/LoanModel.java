@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "loans")
@@ -30,12 +29,10 @@ public class LoanModel {
     private UserModel user;
 
     @Column(name = "loan_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date loanDate;
+    private LocalDate loanDate;
 
     @Column(name = "return_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date returnDate;
+    private LocalDate returnDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -43,12 +40,25 @@ public class LoanModel {
 
     @PrePersist
     protected void onCreate() {
-        this.loanDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(this.loanDate);
-        calendar.add(Calendar.WEEK_OF_YEAR, 1);
-        this.returnDate = calendar.getTime();
+        if (this.loanDate == null) {
+            this.loanDate = LocalDate.now();
+            this.returnDate = loanDate.plusWeeks(1);
+        }
         this.status = LoanStatus.PENDING;
+    }
+
+    public LoanStatus getStatus() {
+        checkOverdueStatus();
+        return status;
+    }
+
+    private void checkOverdueStatus() {
+        if (this.returnDate.isBefore(LocalDate.now()) && this.status != LoanStatus.RETURNED) {
+            this.status = LoanStatus.OVERDUE;
+        }
+        else if (!this.returnDate.isBefore(LocalDate.now()) && this.status != LoanStatus.RETURNED) {
+            this.status = LoanStatus.PENDING;
+        }
     }
 
     public enum LoanStatus {

@@ -34,6 +34,7 @@ public class BookService {
     public BookDto update(BookDto bookDto) {
         BookModel found = repository.findById(bookDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Livro não encontrado!"));
+        found.setImage(bookDto.getImage());
         found.setTitle(bookDto.getTitle());
         found.setAuthor(CustomModelMapper.parseObject(bookDto.getAuthor(), AuthorModel.class));
         found.setGenre(CustomModelMapper.parseObject(bookDto.getGenre(), GenreModel.class));
@@ -41,6 +42,7 @@ public class BookService {
         found.setSummary(bookDto.getSummary());
         found.setPublicationYear(bookDto.getPublicationYear());
         found.setCopiesAvailable(bookDto.getCopiesAvailable());
+        found.setCopies(bookDto.getCopies());
         return CustomModelMapper.parseObject(repository.save(found), BookDto.class);
     }
 
@@ -55,18 +57,18 @@ public class BookService {
         return books.map(book -> CustomModelMapper.parseObject(book, BookDto.class));
     }
 
-    public Page<BookDto> findByName(String name, Pageable pageable) {
-        var books = repository.findByTitleStartingWithIgnoreCaseOrderByTitle(name, pageable);
+    public Page<BookDto> findByTitle(String title, Pageable pageable) {
+        var books = repository.findByTitleStartingWithIgnoreCaseOrderByTitle(title, pageable);
         return books.map(book -> CustomModelMapper.parseObject(book, BookDto.class));
     }
 
-    public Page<BookDto> findByAuthor(String author, Pageable pageable) {
-        var books = repository.findByAuthorStartingWithIgnoreCaseOrderByTitle(author, pageable);
+    public Page<BookDto> findByAuthor(Long author, Pageable pageable) {
+        var books = repository.findByAuthor_IdOrderByTitle(author, pageable);
         return books.map(book -> CustomModelMapper.parseObject(book, BookDto.class));
     }
 
-    public Page<BookDto> findByGenre(String genre, Pageable pageable) {
-        var books = repository.findByGenreStartingWithIgnoreCaseOrderByTitle(genre, pageable);
+    public Page<BookDto> findByGenre(Long genre, Pageable pageable) {
+        var books = repository.findByGenre_IdOrderByTitle(genre, pageable);
         return books.map(book -> CustomModelMapper.parseObject(book, BookDto.class));
     }
 }

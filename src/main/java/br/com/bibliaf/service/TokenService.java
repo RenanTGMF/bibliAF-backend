@@ -1,6 +1,5 @@
 package br.com.bibliaf.service;
 
-import br.com.bibliaf.dto.UserDto;
 import br.com.bibliaf.model.UserModel;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

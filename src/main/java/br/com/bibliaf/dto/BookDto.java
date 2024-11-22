@@ -17,6 +17,8 @@ public class BookDto extends RepresentationModel<BookDto> {
     private GenreDto genre;
     private String isbn;
     private String summary;
+    private String image;
     private int publicationYear;
     private int copiesAvailable;
+    private int copies;
 }

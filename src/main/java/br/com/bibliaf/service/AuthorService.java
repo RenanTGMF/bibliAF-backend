@@ -43,13 +43,18 @@ public class AuthorService {
         repository.delete(found);
     }
 
+    public List<AuthorDto> findAll() {
+        var authors = repository.findAllByOrderByNameAsc();
+        return CustomModelMapper.parseObjectList(authors, AuthorDto.class);
+    }
+
     public Page<AuthorDto> findAll(Pageable pageable) {
         var authors = repository.findAll(pageable);
         return authors.map(author -> CustomModelMapper.parseObject(author, AuthorDto.class));
     }
 
-    public Page<AuthorDto> findByName(String name, Pageable pageable) {
-        var authors = repository.findByNameStartingWithIgnoreCaseOrderByName(name, pageable);
-        return authors.map(author -> CustomModelMapper.parseObject(author, AuthorDto.class));
+    public List<AuthorDto> findByName(String name) {
+        var authors = repository.findByNameStartingWithIgnoreCaseOrderByName(name);
+        return CustomModelMapper.parseObjectList(authors, AuthorDto.class);
     }
 }

@@ -1,15 +1,15 @@
 package br.com.bibliaf.repository;
 
 import br.com.bibliaf.model.GenreModel;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface GenreRepository extends JpaRepository<GenreModel, Long> {
 
-    public Page<GenreModel> findByNameStartingWithIgnoreCaseOrderByName(String name, Pageable pageable);
+    public List<GenreModel> findByNameStartingWithIgnoreCaseOrderByName(String name);
 
-    public Page<GenreModel> findAll(Pageable pageable);
+    public List<GenreModel> findAllByOrderByNameAsc();
 }

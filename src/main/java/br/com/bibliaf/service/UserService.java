@@ -8,6 +8,7 @@ import br.com.bibliaf.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,11 +31,16 @@ public class UserService {
     public UserDto update(UserDto userDto) {
         UserModel found = repository.findById(userDto.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Usuário não encontrado!"));
+        if (!found.getPassword().equals(userDto.getPassword())) {
+            String encodedPassword = new BCryptPasswordEncoder().encode(userDto.getPassword());
+            found.setPassword(encodedPassword);
+        } else {
+            found.setPassword(userDto.getPassword());
+        }
         found.setUsername(userDto.getUsername());
         found.setEmail(userDto.getEmail());
         found.setPhone(userDto.getPhone());
         found.setAddress(userDto.getAddress());
-        found.setPassword(userDto.getPassword());
         found.setRole(userDto.getRole());
         return CustomModelMapper.parseObject(repository.save(found), UserDto.class);
     }

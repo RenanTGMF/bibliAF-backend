@@ -1,5 +1,6 @@
 package br.com.bibliaf.service;
 
+import br.com.bibliaf.dto.LoanDto;
 import br.com.bibliaf.dto.ReservationDto;
 import br.com.bibliaf.exception.ResourceNotFoundException;
 import br.com.bibliaf.mapper.CustomModelMapper;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -45,18 +48,23 @@ public class ReservationService {
         repository.delete(found);
     }
 
-    public Page<ReservationDto> findAll(Pageable pageable) {
-        var reservations = repository.findAll(pageable);
-        return reservations.map(reservation -> CustomModelMapper.parseObject(reservation, ReservationDto.class));
+    public List<ReservationDto> findAll() {
+        var reservations = repository.findAll();
+        return CustomModelMapper.parseObjectList(reservations, ReservationDto.class);
     }
 
     public Page<ReservationDto> findByUser(Long userId, Pageable pageable) {
-        var reservations = repository.findByUserId(userId, pageable);
+        var reservations = repository.findByUserIdAndStatus(userId, ReservationModel.ReservationStatus.ACTIVE, pageable);
         return reservations.map(reservation -> CustomModelMapper.parseObject(reservation, ReservationDto.class));
     }
 
     public Page<ReservationDto> findByBook(Long bookId, Pageable pageable) {
-        var reservations = repository.findByBookId(bookId, pageable);
+        var reservations = repository.findByBookIdAndStatus(bookId, ReservationModel.ReservationStatus.ACTIVE, pageable);
         return reservations.map(reservation -> CustomModelMapper.parseObject(reservation, ReservationDto.class));
+    }
+
+    public ReservationDto findByBookAndUser(Long bookId, Long userId) {
+        var reservations = repository.findByBookIdAndUserId(bookId, userId);
+        return CustomModelMapper.parseObject(reservations, ReservationDto.class);
     }
 }

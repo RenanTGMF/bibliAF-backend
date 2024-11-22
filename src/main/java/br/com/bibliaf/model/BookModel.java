@@ -40,4 +40,24 @@ public class BookModel {
 
     @Column(columnDefinition = "TEXT")
     private String summary;
+
+    @Column(columnDefinition = "TEXT")
+    private String image;
+
+    @Column
+    private int copies;
+
+    public void setCopies(int newCopies) {
+        int difference = newCopies - this.copies;
+
+        this.copiesAvailable += difference;
+
+        this.copies = newCopies;
+
+        if (this.copiesAvailable < 0) {
+            this.copiesAvailable = 0;
+        } else if (this.copiesAvailable > this.copies) {
+            this.copiesAvailable = this.copies;
+        }
+    }
 }
