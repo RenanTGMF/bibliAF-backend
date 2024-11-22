@@ -1,11 +1,12 @@
 # BibliAF - API de Gerenciamento de Bibliotecas
 
-**BibliAF** é uma API REST desenvolvida em **Spring Boot** para o gerenciamento eficiente de bibliotecas. Esta API foi projetada para facilitar o acesso e a organização de informações sobre livros, autores, usuários, reservas e empréstimos, proporcionando um sistema robusto para operações de empréstimos e devoluções.
+**BibliAF** é uma API REST desenvolvida em **Spring Boot** para o gerenciamento eficiente de bibliotecas. Esta API foi projetada para facilitar o acesso e a organização de informações sobre livros, autores, gêneros, usuários, reservas e empréstimos, proporcionando um sistema robusto para operações de empréstimos e devoluções.
 
 ## Funcionalidades
 
 - **Gerenciamento de Livros**: Adicionar, listar, editar e excluir livros.
 - **Cadastro de Autores**: Registrar, listar e atualizar informações sobre autores.
+- **Cadastro de Gêneros**: Registrar, listar e atualizar informações sobre gêneros.
 - **Gestão de Usuários**: Criar, editar e excluir usuários.
 - **Reservas de Livros**: Realizar reservas de livros.
 - **Empréstimos e Devoluções**: Realizar operações de empréstimo e devolução de livros entre os usuários.
